@@ -1,0 +1,5 @@
+<div ng-repeat="error in errors()">
+    <div ng-repeat="(key, value) in error">
+        <div ng-if="value" translate="{{key}}"></div>
+    </div>
+</div>

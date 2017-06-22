@@ -1,0 +1,21 @@
+{
+    "name": "ng-server-validation",
+    "description": "Provides easy hooks for server side validation on AngularJs apps",
+    "authors": [
+        "Abdelhadi BENTABET <Abdelhadi.BENTABET@supinfo.com>"
+    ],
+    "keywords": [
+        "ng-server-validation"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ],
+    "devDependencies": {
+        "gulp":"3.9.1",
+        "gulp-angular-embed-templates":"2.3.0",
+        "gulp-concat":"2.6.0",
+        "gulp-uglify": "2.1.2"
+    }
+}

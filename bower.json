@@ -1,0 +1,18 @@
+{
+    "name": "ng-server-validation",
+    "description": "Provides easy hooks for server side validation on AngularJs apps",
+    "main": [
+        "dist/ng-server-validation.min.js"
+    ],
+    "authors": [
+        "Abdelhadi BENTABET <Abdelhadi.BENTABET@supinfo.com>"
+    ],
+    "keywords": [
+        "ng-server-validation"
+    ],
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ]
+}
