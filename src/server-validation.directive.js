@@ -12,59 +12,33 @@
             require: 'form',
             restrict: 'A',
             scope: {
-                errors: "=serverValidation"
+                response: "=serverValidation"
             }
         };
 
         return directive;
 
         function link(scope, element, attrs, form) {
-            scope.$watch(function () { return scope.errors; }, function () {
-                if (scope.errors) {
-                    var field;
-
-                    // context.SetError("", "");
-                    if (scope.errors.error && scope.errors.error_description) {
-                        field = getField(scope.errors.error);
-                        if (field) {
+            scope.$watch(function () { return scope.response; }, function () {
+                form.$serverErrors = [];
+                if(scope.response && scope.response.errors && scope.response.type === 'Validation'){
+                    for (var key in scope.response.errors){
+                        var field = getField(key);
+                        if(field != null){
                             field.$setTouched();
-                            field.$setValidity(scope.errors.error_description, false);
-                        } else {
-                            if (!form.$serverErrors) {
-                                form.$serverErrors = {};
-                            }
-
-                            if (!form.$serverErrors[scope.errors.error]) {
-                                form.$serverErrors[scope.errors.error] = {};
-                            }
-
-                            form.$serverErrors[scope.errors.error][scope.errors.error_description] = true;
-                        }
-                    }
-
-                    // ModelState.AddModelError("", "")
-                    else {
-                        for (var property in scope.errors) {
-                            field = getField(property);
-                            if (field) {
-                                field.$setTouched();
-                                angular.forEach(scope.errors[property], function (error) {
-                                    field.$setValidity(error, false);
-                                });
-                            } else {
-                                if (!form.$serverErrors) {
-                                    form.$serverErrors = {};
+                            angular.forEach(scope.response.errors[key], function(error) {
+                                field.$setValidity(error.code, false);
+                                if(!field.$$scope.options.validation.messages[error.code]){
+									field.$$scope.options.validation.messages[error.code] = function(){
+										return error.message;
+									}
                                 }
-
-                                if (!form.$serverErrors[property]) {
-                                    form.$serverErrors[property] = {};
-                                }
-
-                                angular.forEach(scope.errors[property], function (error) {
-                                    form.$serverErrors[property][error] = true;
-                                });
-                            }
+                            });
                         }
+                    };
+                } else if(scope.response && scope.response.errors && scope.response.type === 'Business'){
+                    for (var key in scope.response.errors){
+                        form.$serverErrors.push(scope.response.errors[key].message);
                     }
                 }
             });
@@ -75,7 +49,7 @@
                         if (p1.startsWith('formly_')) {
                             for (var p2 in form[p1]) {
                                 if (form[p1].hasOwnProperty(p2)) {
-                                    var regex = new RegExp("formly_[0-9]+_input_" + propertyName.substr(0, 1).toUpperCase() + propertyName.substr(1) + "_[0-9]+", "g");
+                                    var regex = new RegExp("formly_[0-9]+_input_" + propertyName + "_[0-9]+", "g");
                                     if (p2.match(regex)) {
                                         return form[p1][p2];
                                     }
