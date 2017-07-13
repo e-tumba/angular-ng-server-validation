@@ -1,5 +1,3 @@
 <div ng-repeat="error in errors()">
-    <div ng-repeat="(key, value) in error track by $index">
-        <div ng-if="value" translate="{{key}}"></div>
-    </div>
+    <div ng-if="error" translate="{{error}}"></div>
 </div>
